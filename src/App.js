@@ -80,7 +80,7 @@ function App() {
         );
         setCartItems((prev) =>
           prev.map((item) => {
-            if (item.parent == data.parentId) {
+            if (item.parentId == data.parentId) {
               return { ...item, id: data.id };
             }
             return item;
@@ -88,8 +88,11 @@ function App() {
         );
       }
     } catch (error) {
-      alert("Ошибка в корзине");
-      console.error(error);
+      axios.delete(
+        `https://62dd8c43ccdf9f7ec2c9e07f.mockapi.io/CartItems/${obj.id}`
+      );
+      // alert("Ошибка в корзине");
+      // console.error(error);
     }
   };
   const onRemoveItem = async (id) => {
@@ -114,12 +117,13 @@ function App() {
       const findFavourite = favourites.find(
         (cartObj) => cartObj.parentId == obj.id
       );
+      console.log(obj.id);
       if (findFavourite) {
-        setFavourites((prev) =>
-          prev.filter((item) => item.parentId !== obj.id)
-        );
         await axios.delete(
           `https://62dd8c43ccdf9f7ec2c9e07f.mockapi.io/favourites/${findFavourite.id}`
+        );
+        setFavourites((prev) =>
+          prev.filter((item) => item.parentId !== obj.id)
         );
       } else {
         setFavourites((prev) => [...prev, obj]);
@@ -129,7 +133,7 @@ function App() {
         );
         setFavourites((prev) =>
           prev.map((item) => {
-            if (item.parent == data.parentId) {
+            if (item.parentId == data.parentId) {
               return { ...item, id: data.id };
             }
             return item;
@@ -137,8 +141,8 @@ function App() {
         );
       }
     } catch (error) {
-      alert("Ошибка в корзине");
-      console.error(error);
+      alert("Ошибка в избранных");
+      console.log(error);
     }
     // if (favourites.find((favObj) => favObj.id == obj.id)) {
     //   axios.delete(
